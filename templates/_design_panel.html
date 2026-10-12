@@ -1,0 +1,125 @@
+{# Shared design controls (used by Create and Bulk). All inputs carry data-design="key". #}
+<section class="card">
+  <header class="card-head"><h2>Style</h2></header>
+
+  <div class="presets" id="presets" aria-label="Style presets">
+    <button type="button" class="preset" data-preset="classic" title="Classic"><span style="--a:#111827;--b:#111827"></span>Classic</button>
+    <button type="button" class="preset" data-preset="indigo" title="Indigo"><span style="--a:#4338ca;--b:#7c3aed"></span>Indigo</button>
+    <button type="button" class="preset" data-preset="ocean" title="Ocean"><span style="--a:#0369a1;--b:#0d9488"></span>Ocean</button>
+    <button type="button" class="preset" data-preset="sunset" title="Sunset"><span style="--a:#e11d48;--b:#f59e0b"></span>Sunset</button>
+    <button type="button" class="preset" data-preset="forest" title="Forest"><span style="--a:#166534;--b:#166534"></span>Forest</button>
+    <button type="button" class="preset" data-preset="night" title="Night"><span style="--a:#f8fafc;--b:#0f172a"></span>Night</button>
+  </div>
+
+  <details class="group" open>
+    <summary>Colors</summary>
+    <div class="grid-2">
+      <label class="field">Dots
+        <span class="color"><input type="color" data-design="foreground" value="#111827"><input type="text" class="hex" data-for="foreground" value="#111827" maxlength="7"></span>
+      </label>
+      <label class="field">Background
+        <span class="color"><input type="color" data-design="background" value="#ffffff"><input type="text" class="hex" data-for="background" value="#ffffff" maxlength="7"></span>
+      </label>
+      <label class="field">Gradient
+        <select data-design="gradient">
+          <option value="none">None</option>
+          <option value="linear">Diagonal</option>
+          <option value="radial">Radial</option>
+        </select>
+      </label>
+      <label class="field" data-show-if="gradient!=none">Second color
+        <span class="color"><input type="color" data-design="foreground2" value="#7c3aed"><input type="text" class="hex" data-for="foreground2" value="#7c3aed" maxlength="7"></span>
+      </label>
+    </div>
+    <div class="grid-2">
+      <label class="check"><input type="checkbox" id="eye-color-toggle"> Custom corner color</label>
+      <label class="field" data-show-if="eyecolor">Corner color
+        <span class="color"><input type="color" data-design="eye_color" value="#e11d48"><input type="text" class="hex" data-for="eye_color" value="#e11d48" maxlength="7"></span>
+      </label>
+      <label class="check"><input type="checkbox" data-design="transparent"> Transparent background</label>
+    </div>
+    <p class="hint" id="contrast-hint" hidden>Low contrast — some phones may struggle to scan this. Keep dots darker than the background.</p>
+  </details>
+
+  <details class="group" open>
+    <summary>Shape</summary>
+    <div class="field">Dots
+      <div class="seg" data-seg="shape">
+        <button type="button" data-value="square" title="Square"><svg viewBox="0 0 20 20"><path d="M2 2h7v7H2zM11 2h7v7h-7zM2 11h7v7H2z"/></svg></button>
+        <button type="button" data-value="rounded" title="Rounded"><svg viewBox="0 0 20 20"><path d="M5.5 2H18v7H2V5.5A3.5 3.5 0 0 1 5.5 2zM2 11h7v3.5A3.5 3.5 0 0 1 5.5 18 3.5 3.5 0 0 1 2 14.5z"/></svg></button>
+        <button type="button" data-value="dots" title="Dots"><svg viewBox="0 0 20 20"><circle cx="5.5" cy="5.5" r="3.5"/><circle cx="14.5" cy="5.5" r="3.5"/><circle cx="5.5" cy="14.5" r="3.5"/></svg></button>
+        <button type="button" data-value="gapped" title="Gapped"><svg viewBox="0 0 20 20"><rect x="2.5" y="2.5" width="6" height="6" rx="1"/><rect x="11.5" y="2.5" width="6" height="6" rx="1"/><rect x="2.5" y="11.5" width="6" height="6" rx="1"/></svg></button>
+        <button type="button" data-value="leaf" title="Leaf"><svg viewBox="0 0 20 20"><path d="M5.5 2H9v3.5A3.5 3.5 0 0 1 5.5 9H2V5.5A3.5 3.5 0 0 1 5.5 2zM14.5 11H18v3.5a3.5 3.5 0 0 1-3.5 3.5H11v-3.5a3.5 3.5 0 0 1 3.5-3.5z"/></svg></button>
+      </div>
+      <input type="hidden" data-design="shape" value="square">
+    </div>
+    <div class="field">Corners
+      <div class="seg" data-seg="eye_shape">
+        <button type="button" data-value="square" title="Square"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2 2h16v16H2zm3 3v10h10V5z"/><path d="M7.5 7.5h5v5h-5z"/></svg></button>
+        <button type="button" data-value="rounded" title="Rounded"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7 2h6a5 5 0 0 1 5 5v6a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"/><rect x="7.5" y="7.5" width="5" height="5" rx="1.5"/></svg></button>
+        <button type="button" data-value="circle" title="Circle"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a8 8 0 1 1 0 16 8 8 0 0 1 0-16zm0 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/><circle cx="10" cy="10" r="2.6"/></svg></button>
+      </div>
+      <input type="hidden" data-design="eye_shape" value="square">
+    </div>
+  </details>
+
+  <details class="group">
+    <summary>Frame &amp; caption</summary>
+    <div class="grid-2">
+      <label class="field">Frame
+        <select data-design="frame_style">
+          <option value="none">None</option>
+          <option value="banner">Banner</option>
+          <option value="square">Square</option>
+          <option value="rounded">Rounded</option>
+          <option value="corners">Corners</option>
+          <option value="dashed">Dashed</option>
+          <option value="double">Double</option>
+        </select>
+      </label>
+      <label class="field">Frame color
+        <span class="color"><input type="color" data-design="frame_color" value="#111827"><input type="text" class="hex" data-for="frame_color" value="#111827" maxlength="7"></span>
+      </label>
+    </div>
+    <label class="field">Caption
+      <input type="text" data-design="caption" maxlength="60" placeholder="e.g. SCAN ME">
+    </label>
+  </details>
+
+  <details class="group">
+    <summary>Logo</summary>
+    <div class="logo-row">
+      <label class="drop" id="logo-drop">
+        <input type="file" id="logo-input" accept="image/png,image/jpeg,image/webp,image/gif">
+        <img id="logo-thumb" alt="" hidden>
+        <span id="logo-label">Add PNG or JPG (max 2 MB)</span>
+      </label>
+      <button type="button" class="btn ghost small" id="logo-remove" hidden>Remove</button>
+    </div>
+    <label class="field">Logo size <output id="logo-scale-out">22%</output>
+      <input type="range" min="0.12" max="0.3" step="0.01" value="0.22" data-design="logo_scale">
+    </label>
+    <input type="hidden" data-design="logo" value="">
+    <p class="hint">Adding a logo switches error correction to High so the code still scans.</p>
+  </details>
+
+  <details class="group">
+    <summary>Size &amp; quality</summary>
+    <label class="field">Export size <output id="size-out">512 px</output>
+      <input type="range" min="256" max="2048" step="64" value="512" data-design="size">
+    </label>
+    <div class="grid-2">
+      <label class="field">Quiet zone <output id="margin-out">4</output>
+        <input type="range" min="0" max="8" step="1" value="4" data-design="margin">
+      </label>
+      <label class="field">Error correction
+        <select data-design="error_level">
+          <option value="L">Low · 7%</option>
+          <option value="M" selected>Medium · 15%</option>
+          <option value="Q">Quartile · 25%</option>
+          <option value="H">High · 30%</option>
+        </select>
+      </label>
+    </div>
+  </details>
+</section>

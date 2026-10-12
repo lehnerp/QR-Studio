@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Library{% endblock %}
+{% block content %}
+<header class="page-head">
+  <div>
+    <h1>Library</h1>
+    <p class="sub">Every code you download or save lands here. Open one to edit it.</p>
+  </div>
+  <a class="btn primary" href="{{ url_for('generator') }}">New code</a>
+</header>
+
+<section class="stat-row" id="stat-row">
+  <div class="stat"><span>Saved codes</span><strong data-stat="total">–</strong></div>
+  <div class="stat"><span>Created this week</span><strong data-stat="this_week">–</strong></div>
+  <div class="stat"><span>Downloads</span><strong data-stat="downloads">–</strong></div>
+  <div class="stat wide"><span>By type</span><div class="bars" id="type-bars"></div></div>
+</section>
+
+<section class="toolbar">
+  <input type="search" id="search" placeholder="Search names and content…" aria-label="Search">
+  <select id="kind-filter" aria-label="Filter by type">
+    <option value="">All types</option>
+    {% for key, label in type_labels.items() %}<option value="{{ key }}">{{ label }}</option>{% endfor %}
+  </select>
+  <label class="check"><input type="checkbox" id="fav-filter"> Favorites</label>
+</section>
+
+<section class="library" id="library"></section>
+<div class="empty big" id="library-empty" hidden>
+  <svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2zM14 18h2v2h-2zM18 14h2v2h-2z"/></svg>
+  <p>Nothing here yet.</p>
+  <a class="btn primary" href="{{ url_for('generator') }}">Create your first code</a>
+</div>
+
+<template id="card-tpl">
+  <article class="code-card">
+    <a class="thumb" data-edit><img loading="lazy" alt=""></a>
+    <div class="code-body">
+      <div class="code-top">
+        <span class="badge"></span>
+        <button type="button" class="star" title="Favorite" aria-label="Favorite">★</button>
+      </div>
+      <h3 class="code-name" title="Click to rename"></h3>
+      <p class="code-payload"></p>
+      <p class="code-date"></p>
+      <div class="code-actions">
+        <a class="btn small" data-png>PNG</a>
+        <a class="btn small" data-svg>SVG</a>
+        <a class="btn small ghost" data-edit>Edit</a>
+        <button type="button" class="btn small ghost danger" data-delete>Delete</button>
+      </div>
+    </div>
+  </article>
+</template>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='history.js') }}"></script>{% endblock %}

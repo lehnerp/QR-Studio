@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}QR Studio{% endblock %} · QR Studio</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234338ca'/%3E%3Cpath fill='%23fff' d='M7 7h7v7H7zM18 7h7v7h-7zM7 18h7v7H7zM18 18h3v3h-3zM22 22h3v3h-3zM18 22h3v3h-3zM22 18h3v3h-3z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="{{ url_for('generator') }}">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><path d="M7 7h7v7H7zM18 7h7v7h-7zM7 18h7v7H7zM18 18h3v3h-3zM22 22h3v3h-3zM18 22h3v3h-3zM22 18h3v3h-3z"/></svg>
+        </span>
+        <span>QR Studio</span>
+      </a>
+      <nav class="nav">
+        <a href="{{ url_for('generator') }}" class="{{ 'active' if nav == 'generator' }}">
+          <svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2zM14 18h2v2h-2zM18 14h2v2h-2z"/></svg>
+          Create
+        </a>
+        <a href="{{ url_for('history') }}" class="{{ 'active' if nav == 'history' }}">
+          <svg viewBox="0 0 24 24"><path d="M12 8v4l3 2M3 12a9 9 0 1 0 3-6.7L3 8m0-5v5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Library
+        </a>
+        <a href="{{ url_for('bulk') }}" class="{{ 'active' if nav == 'bulk' }}">
+          <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Bulk
+        </a>
+      </nav>
+      <div class="side-stats" id="side-stats">
+        <div><strong data-stat="total">–</strong><span>codes saved</span></div>
+        <div><strong data-stat="downloads">–</strong><span>downloads</span></div>
+      </div>
+      <p class="side-note">Runs locally. Nothing leaves this computer.</p>
+    </aside>
+
+    <main class="main">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

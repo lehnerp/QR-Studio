@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Bulk{% endblock %}
+{% block content %}
+<header class="page-head">
+  <div>
+    <h1>Bulk generate</h1>
+    <p class="sub">Paste one item per line and download them all as a ZIP, styled the same way.</p>
+  </div>
+</header>
+
+<div class="workspace">
+  <div class="col-edit">
+    <section class="card">
+      <header class="card-head"><h2>Items</h2></header>
+      <div class="grid-2">
+        <label class="field">Each line is a
+          <select id="bulk-kind">
+            <option value="url">Website (URL)</option>
+            <option value="text">Text</option>
+          </select>
+        </label>
+        <label class="field">Format
+          <select id="bulk-format">
+            <option value="png">PNG</option>
+            <option value="svg">SVG</option>
+          </select>
+        </label>
+      </div>
+      <label class="field">One item per line
+        <textarea id="bulk-rows" rows="10" spellcheck="false" placeholder="Table 1, https://example.com/order?table=1
+Table 2, https://example.com/order?table=2
+https://example.com/menu"></textarea>
+      </label>
+      <p class="hint">Optionally start a line with a name and a comma — <code>Table 1, https://…</code> — to name the file.</p>
+      <div class="row-between">
+        <label class="check"><input type="checkbox" id="bulk-save"> Also save to library</label>
+        <label class="btn ghost small file-btn">Import CSV<input type="file" id="bulk-file" accept=".csv,.txt"></label>
+      </div>
+      <p class="hint" id="bulk-count">0 items</p>
+    </section>
+    {% include "_design_panel.html" %}
+  </div>
+
+  <aside class="col-preview">
+    <section class="card preview-card">
+      <div class="preview-stage" id="stage">
+        <img id="preview-img" alt="Style preview" hidden>
+        <div class="empty" id="preview-empty"><p>Style preview uses your first line.</p></div>
+        <div class="spinner" id="spinner" hidden></div>
+      </div>
+      <p class="error" id="preview-error" hidden></p>
+      <div class="actions">
+        <button type="button" class="btn primary" id="bulk-go" disabled>Download ZIP</button>
+      </div>
+      <p class="hint center">The ZIP includes a manifest.csv listing each file and its content.</p>
+    </section>
+  </aside>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='design.js') }}"></script>
+<script src="{{ url_for('static', filename='bulk.js') }}"></script>
+{% endblock %}

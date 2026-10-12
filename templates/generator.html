@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %}Create{% endblock %}
+{% block content %}
+<header class="page-head">
+  <div>
+    <h1>Create a QR code</h1>
+    <p class="sub">Pick what it should open, style it, and download PNG or SVG.</p>
+  </div>
+  <button type="button" class="btn ghost" id="reset-btn">Start over</button>
+</header>
+
+<div class="workspace">
+  <div class="col-edit">
+    <section class="card">
+      <header class="card-head"><h2>Content</h2></header>
+      <div class="types" role="tablist" id="types">
+        {% for key in ['url','text','wifi','vcard','email','sms','phone','event','geo'] %}
+        <button type="button" role="tab" class="type" data-kind="{{ key }}">{{ type_labels[key] }}</button>
+        {% endfor %}
+      </div>
+
+      <form id="content-form" autocomplete="off" onsubmit="return false">
+        <fieldset data-kind="url">
+          <label class="field">Website address
+            <input type="text" data-field="url" placeholder="example.com/menu" inputmode="url">
+          </label>
+        </fieldset>
+
+        <fieldset data-kind="text" hidden>
+          <label class="field">Text
+            <textarea data-field="text" rows="5" placeholder="Any text, up to ~2,900 characters"></textarea>
+          </label>
+        </fieldset>
+
+        <fieldset data-kind="wifi" hidden>
+          <label class="field">Network name (SSID)
+            <input type="text" data-field="ssid" placeholder="My Home Wi-Fi">
+          </label>
+          <div class="grid-2">
+            <label class="field">Security
+              <select data-field="encryption">
+                <option value="WPA">WPA / WPA2 / WPA3</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">None (open)</option>
+              </select>
+            </label>
+            <label class="field" data-hide-if-open>Password
+              <span class="pw"><input type="password" data-field="password"><button type="button" class="pw-toggle" aria-label="Show password">Show</button></span>
+            </label>
+          </div>
+          <label class="check"><input type="checkbox" data-field="hidden"> Hidden network</label>
+        </fieldset>
+
+        <fieldset data-kind="vcard" hidden>
+          <div class="grid-2">
+            <label class="field">Full name <input type="text" data-field="name" placeholder="Jana Nováková"></label>
+            <label class="field">Phone <input type="tel" data-field="phone" placeholder="+420 777 123 456"></label>
+            <label class="field">Email <input type="email" data-field="email"></label>
+            <label class="field">Website <input type="text" data-field="website"></label>
+            <label class="field">Company <input type="text" data-field="org"></label>
+            <label class="field">Job title <input type="text" data-field="title"></label>
+          </div>
+          <label class="field">Address <input type="text" data-field="address"></label>
+        </fieldset>
+
+        <fieldset data-kind="email" hidden>
+          <label class="field">To <input type="email" data-field="to" placeholder="hello@example.com"></label>
+          <label class="field">Subject <input type="text" data-field="subject"></label>
+          <label class="field">Message <textarea data-field="body" rows="4"></textarea></label>
+        </fieldset>
+
+        <fieldset data-kind="sms" hidden>
+          <label class="field">Phone number <input type="tel" data-field="phone" placeholder="+420 777 123 456"></label>
+          <label class="field">Message <textarea data-field="message" rows="4"></textarea></label>
+        </fieldset>
+
+        <fieldset data-kind="phone" hidden>
+          <label class="field">Phone number <input type="tel" data-field="phone" placeholder="+420 777 123 456"></label>
+        </fieldset>
+
+        <fieldset data-kind="event" hidden>
+          <label class="field">Event title <input type="text" data-field="title" placeholder="Product launch"></label>
+          <div class="grid-2">
+            <label class="field">Starts <input type="datetime-local" data-field="start"></label>
+            <label class="field">Ends <input type="datetime-local" data-field="end"></label>
+          </div>
+          <label class="field">Location <input type="text" data-field="location"></label>
+          <label class="field">Details <textarea data-field="description" rows="3"></textarea></label>
+        </fieldset>
+
+        <fieldset data-kind="geo" hidden>
+          <div class="grid-2">
+            <label class="field">Latitude <input type="text" data-field="lat" placeholder="50.0875" inputmode="decimal"></label>
+            <label class="field">Longitude <input type="text" data-field="lng" placeholder="14.4213" inputmode="decimal"></label>
+          </div>
+          <p class="hint">Tip: right-click a spot in any map app to copy its coordinates.</p>
+        </fieldset>
+      </form>
+    </section>
+
+    {% include "_design_panel.html" %}
+  </div>
+
+  <aside class="col-preview">
+    <section class="card preview-card">
+      <div class="preview-stage" id="stage">
+        <img id="preview-img" alt="QR code preview" hidden>
+        <div class="empty" id="preview-empty">
+          <svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2zM14 18h2v2h-2zM18 14h2v2h-2z"/></svg>
+          <p>Your code appears here as you type.</p>
+        </div>
+        <div class="spinner" id="spinner" hidden></div>
+      </div>
+      <p class="error" id="preview-error" hidden></p>
+
+      <dl class="meta" id="meta" hidden>
+        <div><dt>Version</dt><dd data-meta="version">–</dd></div>
+        <div><dt>Grid</dt><dd data-meta="modules">–</dd></div>
+        <div><dt>Correction</dt><dd data-meta="error_level">–</dd></div>
+        <div><dt>Data</dt><dd data-meta="bytes">–</dd></div>
+      </dl>
+
+      <details class="payload" id="payload-box" hidden>
+        <summary>Encoded content</summary>
+        <pre id="payload"></pre>
+      </details>
+
+      <label class="field">Name
+        <input type="text" id="code-name" placeholder="Used for the file and your library" maxlength="120">
+      </label>
+
+      <div class="actions">
+        <button type="button" class="btn primary" id="dl-png" disabled>Download PNG</button>
+        <button type="button" class="btn" id="dl-svg" disabled>SVG</button>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn ghost" id="save-btn" disabled>Save to library</button>
+        <button type="button" class="btn ghost" id="copy-btn" disabled>Copy image</button>
+      </div>
+      <p class="hint center">Always test-scan before printing.</p>
+    </section>
+  </aside>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='design.js') }}"></script>
+<script src="{{ url_for('static', filename='generator.js') }}"></script>
+{% endblock %}
